@@ -8,7 +8,11 @@
 
 #import "ViewController.h"
 
+#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&per_page=10&tags="
+
 @interface ViewController ()
+
+@property NSArray *photos;
 
 @end
 
@@ -17,13 +21,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+	[self loadFlickrPhotosWithKeyword:@"lion"];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)loadFlickrPhotosWithKeyword:(NSString *)keyword
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	NSURL *url = [NSURL URLWithString:[urlToRetrieveFlickrPhotos stringByAppendingString:keyword]];
+	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+	[NSURLConnection sendAsynchronousRequest:urlRequest
+									   queue:[NSOperationQueue mainQueue]
+						   completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+							   NSDictionary *decodedJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+							   self.photos = decodedJSON[@"photos"][@"photo"];
+							   NSLog(@"%@", self.photos);
+	}];
 }
 
 @end
