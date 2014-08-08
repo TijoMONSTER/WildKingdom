@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Mobile Makers. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "PhotosViewController.h"
 #import "PhotoCell.h"
 
-#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&per_page=10&tags="
+#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&tags="
 
-@interface ViewController () <UICollectionViewDataSource>
+@interface PhotosViewController () <UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -20,17 +20,20 @@
 
 @end
 
-@implementation ViewController
+@implementation PhotosViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-	[self loadFlickrPhotosWithKeyword:@"lion"];
 }
 
 - (void)loadFlickrPhotosWithKeyword:(NSString *)keyword
 {
+	// don't load it a second time
+	if (self.photosJSON != nil) {
+		return;
+	}
+
 	NSURL *url = [NSURL URLWithString:[urlToRetrieveFlickrPhotos stringByAppendingString:keyword]];
 	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
 	[NSURLConnection sendAsynchronousRequest:urlRequest
@@ -60,7 +63,11 @@
 
 	// load image
 	if (!self.cachedPhotos[photoId]) {
-		NSString *imageURLString = [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@.jpg", photoDictionary[@"farm"], photoDictionary[@"server"], photoId, photoDictionary[@"secret"]];
+		NSString *imageURLString = [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@.jpg",
+									photoDictionary[@"farm"],
+									photoDictionary[@"server"],
+									photoId,
+									photoDictionary[@"secret"]];
 
 		[cell showActivityIndicator];
 

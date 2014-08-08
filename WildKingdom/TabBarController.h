@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  TabBarController.h
 //  WildKingdom
 //
 //  Created by Iván Mervich on 8/7/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface TabBarController : UITabBarController
 
 @end
