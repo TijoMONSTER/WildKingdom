@@ -11,7 +11,7 @@
 #import "MapViewController.h"
 #import "Photo.h"
 
-#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&tags="
+#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&tag_mode=all&tags="
 
 @interface PhotosViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -36,6 +36,12 @@
 	self.flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	[self adjustFlowLayout];
+}
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
@@ -44,6 +50,7 @@
 
 - (void)adjustFlowLayout
 {
+	NSLog(@"adjust flow layout");
 	UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
 
 	if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
@@ -150,7 +157,9 @@
 {
 	if ([segue.identifier isEqualToString:@"showLocationInMapSegue"]) {
 		MapViewController *mapVC = (MapViewController *)segue.destinationViewController;
-		
+
+		NSIndexPath *selectedCellIndexPath = self.collectionView.indexPathsForSelectedItems[0];
+		mapVC.photo = self.photos[selectedCellIndexPath.row];
 	}
 }
 
