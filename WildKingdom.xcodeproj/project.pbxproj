@@ -21,6 +21,7 @@
 		2C49108A199423E4008061F4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C49106C199423E4008061F4 /* UIKit.framework */; };
 		2C491092199423E4008061F4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C491090199423E4008061F4 /* InfoPlist.strings */; };
 		2C491094199423E4008061F4 /* WildKingdomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C491093199423E4008061F4 /* WildKingdomTests.m */; };
+		2C49109F19944CFB008061F4 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C49109E19944CFB008061F4 /* PhotoCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		2C49108F199423E4008061F4 /* WildKingdomTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WildKingdomTests-Info.plist"; sourceTree = "<group>"; };
 		2C491091199423E4008061F4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2C491093199423E4008061F4 /* WildKingdomTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WildKingdomTests.m; sourceTree = "<group>"; };
+		2C49109D19944CFB008061F4 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
+		2C49109E19944CFB008061F4 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +118,8 @@
 				2C491077199423E4008061F4 /* AppDelegate.h */,
 				2C491078199423E4008061F4 /* AppDelegate.m */,
 				2C49107A199423E4008061F4 /* Main.storyboard */,
+				2C49109D19944CFB008061F4 /* PhotoCell.h */,
+				2C49109E19944CFB008061F4 /* PhotoCell.m */,
 				2C49107D199423E4008061F4 /* ViewController.h */,
 				2C49107E199423E4008061F4 /* ViewController.m */,
 				2C491080199423E4008061F4 /* Images.xcassets */,
@@ -249,6 +254,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C49109F19944CFB008061F4 /* PhotoCell.m in Sources */,
 				2C49107F199423E4008061F4 /* ViewController.m in Sources */,
 				2C491079199423E4008061F4 /* AppDelegate.m in Sources */,
 				2C491075199423E4008061F4 /* main.m in Sources */,
