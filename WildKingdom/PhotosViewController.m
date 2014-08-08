@@ -67,7 +67,7 @@
 - (void)loadFlickrPhotosWithKeyword:(NSString *)keyword
 {
 	// don't load it a second time
-	if (!self.photos) {
+	if (self.photos) {
 		return;
 	}
 
