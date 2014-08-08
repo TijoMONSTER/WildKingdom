@@ -10,7 +10,7 @@
 
 @interface PhotoCell ()
 
-@property UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -19,9 +19,6 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super initWithCoder:aDecoder];
-
-	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-	self.activityIndicator.center = self.center;
 	self.activityIndicator.alpha = 0;
 
 	return self;

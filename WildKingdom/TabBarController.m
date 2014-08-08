@@ -28,16 +28,19 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-	PhotosViewController *animalViewController = (PhotosViewController *)viewController;
+	PhotosViewController *photosViewController = (PhotosViewController *)viewController;
+	NSString *keyword;
 
 	// tigers vc
 	if ([viewController isEqual: tabBarController.viewControllers[1]]) {
-		[animalViewController loadFlickrPhotosWithKeyword:@"tiger"];
+		keyword = @"tiger";
 	}
 	// bears vc
 	else if ([viewController isEqual: tabBarController.viewControllers[2]]) {
-		[animalViewController loadFlickrPhotosWithKeyword:@"bear"];
+		keyword = @"bear";
 	}
+	[photosViewController loadFlickrPhotosWithKeyword:keyword];
+	[photosViewController adjustFlowLayout];
 }
 
 @end

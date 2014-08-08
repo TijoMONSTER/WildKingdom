@@ -18,6 +18,8 @@
 @property NSArray *photosJSON;
 @property NSMutableDictionary *cachedPhotos;
 
+@property UICollectionViewFlowLayout *flowLayout;
+
 @end
 
 @implementation PhotosViewController
@@ -25,6 +27,37 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.flowLayout = [UICollectionViewFlowLayout new];
+	self.flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	[self adjustFlowLayout];
+}
+
+- (void)adjustFlowLayout
+{
+	UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+
+	if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
+		self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+		// change scroll driection to horizontal
+		flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+		self.collectionView.alwaysBounceVertical = NO;
+		self.collectionView.alwaysBounceHorizontal = YES;
+		self.collectionView.showsVerticalScrollIndicator = NO;
+		self.collectionView.showsHorizontalScrollIndicator = YES;
+	} else {
+		// change scroll direction to vertical
+		flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+		self.collectionView.alwaysBounceVertical = YES;
+		self.collectionView.alwaysBounceHorizontal = NO;
+		self.collectionView.showsVerticalScrollIndicator = YES;
+		self.collectionView.showsHorizontalScrollIndicator = NO;
+	}
 }
 
 - (void)loadFlickrPhotosWithKeyword:(NSString *)keyword
@@ -55,6 +88,8 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	PhotoCell *cell = (PhotoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
+
+
 
 	cell.imageView.image = nil;
 
