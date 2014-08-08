@@ -18,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property NSMutableArray *photos;
-@property NSArray *photosJSON;
 @property NSMutableDictionary *cachedPhotos;
 
 @property UICollectionViewFlowLayout *flowLayout;
@@ -68,7 +67,7 @@
 - (void)loadFlickrPhotosWithKeyword:(NSString *)keyword
 {
 	// don't load it a second time
-	if (self.photosJSON != nil) {
+	if (!self.photos) {
 		return;
 	}
 
