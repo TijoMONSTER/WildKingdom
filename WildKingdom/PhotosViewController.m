@@ -73,9 +73,17 @@
 	[NSURLConnection sendAsynchronousRequest:urlRequest
 									   queue:[NSOperationQueue mainQueue]
 						   completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-							   NSDictionary *decodedJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-							   self.photosJSON = decodedJSON[@"photos"][@"photo"];
-							   [self.collectionView reloadData];
+
+							   if (!connectionError) {
+								   NSDictionary *decodedJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+								   self.photosJSON = decodedJSON[@"photos"][@"photo"];
+								   [self.collectionView reloadData];
+							   } else {
+								   UIAlertView *alertView = [UIAlertView new];
+								   alertView.message = connectionError.localizedDescription;
+								   [alertView addButtonWithTitle:@"OK"];
+								   [alertView show];
+							   }
 	}];
 }
 
@@ -89,8 +97,6 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	PhotoCell *cell = (PhotoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
-
-
 
 	cell.imageView.image = nil;
 
