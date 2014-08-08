@@ -11,7 +11,11 @@
 #import "MapViewController.h"
 #import "Photo.h"
 
-#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&tag_mode=all&tags="
+#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&has_geo=1&tag_mode=all&tags="
+
+#define flowLayoutItemSizePortrait CGSizeMake(155, 155)
+#define flowLayoutItemSizeLandscape CGSizeMake(190, 190)
+
 
 @interface PhotosViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -36,6 +40,12 @@
 	self.flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	self.tabBarController.tabBar.hidden = NO;
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
@@ -50,7 +60,6 @@
 
 - (void)adjustFlowLayout
 {
-	NSLog(@"adjust flow layout");
 	UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
 
 	if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
@@ -61,6 +70,7 @@
 		self.collectionView.alwaysBounceHorizontal = YES;
 		self.collectionView.showsVerticalScrollIndicator = NO;
 		self.collectionView.showsHorizontalScrollIndicator = YES;
+		flowLayout.itemSize = flowLayoutItemSizeLandscape;
 	} else {
 		// change scroll direction to vertical
 		flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -68,6 +78,8 @@
 		self.collectionView.alwaysBounceHorizontal = NO;
 		self.collectionView.showsVerticalScrollIndicator = YES;
 		self.collectionView.showsHorizontalScrollIndicator = NO;
+		flowLayout.itemSize = flowLayoutItemSizePortrait;
+
 	}
 }
 
@@ -114,6 +126,7 @@
 	PhotoCell *cell = (PhotoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
 
 	cell.imageView.image = nil;
+	[cell showActivityIndicator];
 
 	Photo *photo = self.photos[indexPath.row];
 
@@ -139,8 +152,8 @@
 	} else {
 		// show the cached image
 		cell.imageView.image = photo.image;
+		[cell hideActivityIndicator];
 	}
-
 	return cell;
 }
 
@@ -157,7 +170,6 @@
 {
 	if ([segue.identifier isEqualToString:@"showLocationInMapSegue"]) {
 		MapViewController *mapVC = (MapViewController *)segue.destinationViewController;
-
 		NSIndexPath *selectedCellIndexPath = self.collectionView.indexPathsForSelectedItems[0];
 		mapVC.photo = self.photos[selectedCellIndexPath.row];
 	}

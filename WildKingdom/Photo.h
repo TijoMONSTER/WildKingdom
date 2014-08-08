@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface Photo : NSObject
 
@@ -16,6 +17,7 @@
 @property NSString *server;
 @property int farm;
 @property UIImage *image;
+@property CLLocation *location;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

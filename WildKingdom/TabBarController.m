@@ -22,7 +22,7 @@
 
 	UINavigationController *childNavController = (UINavigationController *)self.viewControllers[0];
 	PhotosViewController *lionsViewController = (PhotosViewController *)childNavController.viewControllers[0];
-	[lionsViewController loadFlickrPhotosWithKeyword:@"lion,lions,zoo"];
+	[lionsViewController loadFlickrPhotosWithKeyword:@"lions,wild"];
 }
 
 #pragma mark - UITabBarControllerDelegate

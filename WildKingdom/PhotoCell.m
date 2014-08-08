@@ -36,13 +36,15 @@
 
 - (void)hideActivityIndicator
 {
-	[UIView animateWithDuration:1.0 animations:^{
-		self.activityIndicator.alpha = 0;
-	} completion:^(BOOL finished) {
-		[self.activityIndicator stopAnimating];
-		[self.activityIndicator removeFromSuperview];
-		self.activityIndicator = nil;
-	}];
+	if (self.activityIndicator.alpha != 0) {
+		[UIView animateWithDuration:1.0 animations:^{
+			self.activityIndicator.alpha = 0;
+		} completion:^(BOOL finished) {
+			[self.activityIndicator stopAnimating];
+			[self.activityIndicator removeFromSuperview];
+			//		self.activityIndicator = nil;
+		}];
+	}
 }
 
 #pragma mark - IBActions
