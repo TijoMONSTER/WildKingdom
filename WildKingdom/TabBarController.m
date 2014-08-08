@@ -22,7 +22,7 @@
 
 	UINavigationController *childNavController = (UINavigationController *)self.viewControllers[0];
 	PhotosViewController *lionsViewController = (PhotosViewController *)childNavController.viewControllers[0];
-	[lionsViewController loadFlickrPhotosWithKeyword:@"lion"];
+	[lionsViewController loadFlickrPhotosWithKeyword:@"lion,lions,zoo"];
 }
 
 #pragma mark - UITabBarControllerDelegate
@@ -35,11 +35,11 @@
 
 	// tigers vc
 	if ([viewController isEqual: tabBarController.viewControllers[1]]) {
-		keyword = @"tiger";
+		keyword = @"tiger,tigers,zoo";
 	}
 	// bears vc
 	else if ([viewController isEqual: tabBarController.viewControllers[2]]) {
-		keyword = @"bear";
+		keyword = @"bear, bears, zoo";
 	}
 	[photosViewController loadFlickrPhotosWithKeyword:keyword];
 	[photosViewController adjustFlowLayout];
