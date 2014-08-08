@@ -23,6 +23,8 @@
 		2C491094199423E4008061F4 /* WildKingdomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C491093199423E4008061F4 /* WildKingdomTests.m */; };
 		2C49109F19944CFB008061F4 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C49109E19944CFB008061F4 /* PhotoCell.m */; };
 		2C4910A219945A85008061F4 /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C4910A119945A85008061F4 /* TabBarController.m */; };
+		2C5CC3D71995231F00BAFFA2 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5CC3D61995231F00BAFFA2 /* MapViewController.m */; };
+		2C5CC3D9199523A600BAFFA2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C5CC3D8199523A600BAFFA2 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,9 @@
 		2C49109E19944CFB008061F4 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
 		2C4910A019945A85008061F4 /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
 		2C4910A119945A85008061F4 /* TabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarController.m; sourceTree = "<group>"; };
+		2C5CC3D51995231F00BAFFA2 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		2C5CC3D61995231F00BAFFA2 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		2C5CC3D8199523A600BAFFA2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C5CC3D9199523A600BAFFA2 /* MapKit.framework in Frameworks */,
 				2C49106B199423E4008061F4 /* CoreGraphics.framework in Frameworks */,
 				2C49106D199423E4008061F4 /* UIKit.framework in Frameworks */,
 				2C491069199423E4008061F4 /* Foundation.framework in Frameworks */,
@@ -107,6 +113,7 @@
 		2C491067199423E4008061F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2C5CC3D8199523A600BAFFA2 /* MapKit.framework */,
 				2C491068199423E4008061F4 /* Foundation.framework */,
 				2C49106A199423E4008061F4 /* CoreGraphics.framework */,
 				2C49106C199423E4008061F4 /* UIKit.framework */,
@@ -123,6 +130,8 @@
 				2C49107A199423E4008061F4 /* Main.storyboard */,
 				2C4910A019945A85008061F4 /* TabBarController.h */,
 				2C4910A119945A85008061F4 /* TabBarController.m */,
+				2C5CC3D51995231F00BAFFA2 /* MapViewController.h */,
+				2C5CC3D61995231F00BAFFA2 /* MapViewController.m */,
 				2C49109D19944CFB008061F4 /* PhotoCell.h */,
 				2C49109E19944CFB008061F4 /* PhotoCell.m */,
 				2C49107D199423E4008061F4 /* PhotosViewController.h */,
@@ -262,6 +271,7 @@
 				2C49109F19944CFB008061F4 /* PhotoCell.m in Sources */,
 				2C49107F199423E4008061F4 /* PhotosViewController.m in Sources */,
 				2C4910A219945A85008061F4 /* TabBarController.m in Sources */,
+				2C5CC3D71995231F00BAFFA2 /* MapViewController.m in Sources */,
 				2C491079199423E4008061F4 /* AppDelegate.m in Sources */,
 				2C491075199423E4008061F4 /* main.m in Sources */,
 			);

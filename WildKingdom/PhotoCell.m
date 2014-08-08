@@ -45,4 +45,11 @@
 	}];
 }
 
+#pragma mark - IBActions
+
+- (IBAction)onPhotoTapped:(UIImageView *)imageView
+{
+
+}
+
 @end

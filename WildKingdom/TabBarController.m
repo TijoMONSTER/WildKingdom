@@ -20,7 +20,8 @@
     [super viewDidLoad];
 	self.delegate = self;
 
-	PhotosViewController *lionsViewController = (PhotosViewController *)self.viewControllers[0];
+	UINavigationController *childNavController = (UINavigationController *)self.viewControllers[0];
+	PhotosViewController *lionsViewController = (PhotosViewController *)childNavController.viewControllers[0];
 	[lionsViewController loadFlickrPhotosWithKeyword:@"lion"];
 }
 
@@ -28,6 +29,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
+	return;
 	PhotosViewController *photosViewController = (PhotosViewController *)viewController;
 	NSString *keyword;
 

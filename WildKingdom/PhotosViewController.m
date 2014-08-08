@@ -8,10 +8,11 @@
 
 #import "PhotosViewController.h"
 #import "PhotoCell.h"
+#import "MapViewController.h"
 
 #define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&tags="
 
-@interface PhotosViewController () <UICollectionViewDataSource>
+@interface PhotosViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -44,7 +45,7 @@
 
 	if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
 		self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-		// change scroll driection to horizontal
+		// change scroll direction to horizontal
 		flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 		self.collectionView.alwaysBounceVertical = NO;
 		self.collectionView.alwaysBounceHorizontal = YES;
@@ -125,6 +126,23 @@
 	}
 
 	return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//	NSLog(@"tapped cell index %d", indexPath.row);
+//}
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	if ([segue.identifier isEqualToString:@"showLocationInMapSegue"]) {
+		MapViewController *mapVC = (MapViewController *)segue.destinationViewController;
+		
+	}
 }
 
 @end
