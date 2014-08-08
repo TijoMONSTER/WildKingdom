@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Photo.h"
 
 @interface MapViewController : UIViewController
 
-
+@property Photo *photo;
 
 @end
