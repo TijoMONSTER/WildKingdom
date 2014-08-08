@@ -9,6 +9,7 @@
 #import "PhotosViewController.h"
 #import "PhotoCell.h"
 #import "MapViewController.h"
+#import "Photo.h"
 
 #define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&tags="
 
@@ -16,6 +17,7 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
+@property NSMutableArray *photos;
 @property NSArray *photosJSON;
 @property NSMutableDictionary *cachedPhotos;
 
@@ -28,6 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.photos = [NSMutableArray new];
 
 	self.flowLayout = [UICollectionViewFlowLayout new];
 	self.flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -76,7 +80,12 @@
 
 							   if (!connectionError) {
 								   NSDictionary *decodedJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-								   self.photosJSON = decodedJSON[@"photos"][@"photo"];
+								   
+								   NSArray *photosJSON = decodedJSON[@"photos"][@"photo"];
+								   for (NSDictionary *photoJSON in photosJSON) {
+									   Photo *photo = [[Photo alloc] initWithDictionary:photoJSON];
+									   [self.photos addObject:photo];
+								   }
 								   [self.collectionView reloadData];
 							   } else {
 								   UIAlertView *alertView = [UIAlertView new];
@@ -91,7 +100,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return [self.photosJSON count];
+	return [self.photos count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -100,16 +109,11 @@
 
 	cell.imageView.image = nil;
 
-	NSDictionary *photoDictionary = self.photosJSON[indexPath.row];
-	NSString *photoId = photoDictionary[@"id"];
+	Photo *photo = self.photos[indexPath.row];
 
 	// load image
-	if (!self.cachedPhotos[photoId]) {
-		NSString *imageURLString = [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@.jpg",
-									photoDictionary[@"farm"],
-									photoDictionary[@"server"],
-									photoId,
-									photoDictionary[@"secret"]];
+	if (!photo.image) {
+		NSString *imageURLString = [NSString stringWithFormat:@"https://farm%d.staticflickr.com/%@/%@_%@.jpg", photo.farm, photo.server, photo.photoId, photo.secret];
 
 		[cell showActivityIndicator];
 
@@ -120,15 +124,15 @@
 			UIImage *image = [UIImage imageWithData:imageData];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
-				self.cachedPhotos[photoId] = image;
-				cell.imageView.image = image;
+				photo.image = image;
+				cell.imageView.image = photo.image;
 
 				[cell hideActivityIndicator];
 			});
 		});
 	} else {
 		// show the cached image
-		cell.imageView.image = self.cachedPhotos[photoId];
+		cell.imageView.image = photo.image;
 	}
 
 	return cell;

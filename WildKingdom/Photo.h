@@ -10,12 +10,12 @@
 
 @interface Photo : NSObject
 
-@property NSString id;
-@property NSString owner;
-@property NSString secret;
-@property NSString server;
+@property NSString *photoId;
+@property NSString *owner;
+@property NSString *secret;
+@property NSString *server;
 @property int farm;
-@property UIImage image;
+@property UIImage *image;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

@@ -20,11 +20,11 @@
 	self = [super init];
 	self.photoInfo = dictionary;
 
-	self.id = [self.photoInfo[@"id"] stringValue];
-	self.owner = [self.photoInfo[@"owner"] stringValue];
-	self.secret = [self.photoInfo[@"secret"] stringValue];
-	self.server = [self.photoInfo[@"server"] stringValue];
-	self.farm = [self.photoInfo[@""] intValue];
+	self.photoId = self.photoInfo[@"id"];
+	self.owner = self.photoInfo[@"owner"];
+	self.secret = self.photoInfo[@"secret"];
+	self.server = self.photoInfo[@"server"];
+	self.farm = [self.photoInfo[@"farm"] intValue];
 
 	return self;
 }
