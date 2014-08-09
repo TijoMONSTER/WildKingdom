@@ -8,25 +8,77 @@
 
 #import "Photo.h"
 
+#define urlToGetFlickrPhotoLocation @"https://api.flickr.com/services/rest/?method=flickr.photos.geo.getLocation&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&photo_id="
+#define flickrLocationDownloadStateOK @"ok"
+
 @interface Photo ()
 
-@property NSDictionary *photoInfo;
 @end
 
 @implementation Photo
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary delegate:(id<PhotoDelegate>)delegate
 {
 	self = [super init];
-	self.photoInfo = dictionary;
 
-	self.photoId = self.photoInfo[@"id"];
-	self.owner = self.photoInfo[@"owner"];
-	self.secret = self.photoInfo[@"secret"];
-	self.server = self.photoInfo[@"server"];
-	self.farm = [self.photoInfo[@"farm"] intValue];
+	self.photoId = dictionary[@"id"];
+	self.owner = dictionary[@"owner"];
+	self.secret = dictionary[@"secret"];
+	self.server = dictionary[@"server"];
+	self.farm = [dictionary[@"farm"] intValue];
+	self.title = dictionary[@"title"];
+
+	self.delegate = delegate;
 
 	return self;
+}
+
+- (void)loadLocation
+{
+	// load location only once
+	if (self.location) {
+		[self.delegate locationWasSetForPhoto:self];
+		return;
+	}
+
+	NSURL *url = [NSURL URLWithString:[urlToGetFlickrPhotoLocation stringByAppendingString:self.photoId]];
+	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+	[NSURLConnection sendAsynchronousRequest:urlRequest
+									   queue:[NSOperationQueue mainQueue]
+						   completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+
+							   NSString *errorMessage;
+
+							   if (!connectionError) {
+								   NSDictionary *decodedJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+
+								   // request status = "ok"
+								   if ([decodedJSON[@"stat"] isEqualToString:flickrLocationDownloadStateOK]) {
+
+									   NSDictionary *location = decodedJSON[@"photo"][@"location"];
+									   double latitude = [location[@"latitude"] doubleValue];
+									   double longitude = [location[@"longitude"] doubleValue];
+									   self.location = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+
+									   self.country = location[@"country"][@"_content"];
+									   self.region = location[@"region"][@"_content"];
+
+									   [self.delegate locationWasSetForPhoto:self];
+								   }
+								   // request status = "fail"
+								   else {
+									   errorMessage = [NSString stringWithFormat:@"Error downloading location for photoID:%@, error code: %d",self.photoId, [decodedJSON[@"code"] intValue]];
+								   }
+							   }
+							   // connection error
+							   else {
+								   errorMessage = connectionError.localizedDescription;
+							   }
+
+							   if (errorMessage) {
+								   [self.delegate locationWasNotSetForPhoto:self withErrorMessage:errorMessage];
+							   }
+						   }];
 }
 
 @end

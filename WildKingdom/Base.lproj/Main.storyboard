@@ -81,22 +81,61 @@
                                                     <rect key="frame" x="59" y="59" width="37" height="37"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </activityIndicatorView>
+                                                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ech-nP-ZW0" customClass="PhotoCellDetailView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="155" height="155"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LabelLabelLabelLabelLabel" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="115" translatesAutoresizingMaskIntoConstraints="NO" id="ILe-Rd-QEz">
+                                                            <rect key="frame" x="20" y="20" width="115" height="45"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="195-32-NOl">
+                                                            <rect key="frame" x="103" y="103" width="32" height="32"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="32" id="LVR-Il-dWF"/>
+                                                                <constraint firstAttribute="height" constant="32" id="ebj-Fk-qje"/>
+                                                            </constraints>
+                                                            <state key="normal" image="location">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="onLocationButtonPressed:" destination="juU-Jj-VOG" eventType="touchUpInside" id="QWU-XQ-xl6"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="195-32-NOl" secondAttribute="bottom" constant="20" id="4gQ-4T-r7h"/>
+                                                        <constraint firstAttribute="trailing" secondItem="195-32-NOl" secondAttribute="trailing" constant="20" id="X2Z-gt-K5U"/>
+                                                    </constraints>
+                                                    <connections>
+                                                        <outlet property="locationLabel" destination="ILe-Rd-QEz" id="Ozk-4P-WYn"/>
+                                                    </connections>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="fh1-gh-0pc" secondAttribute="bottom" id="5WU-Xs-d4x"/>
+                                            <constraint firstAttribute="trailing" secondItem="ech-nP-ZW0" secondAttribute="trailing" id="5kq-It-riO"/>
+                                            <constraint firstItem="ech-nP-ZW0" firstAttribute="leading" secondItem="juU-Jj-VOG" secondAttribute="leading" id="AlO-N6-Fvv"/>
                                             <constraint firstAttribute="centerX" secondItem="9NZ-GQ-10D" secondAttribute="centerX" id="G9d-nm-HiT"/>
                                             <constraint firstItem="fh1-gh-0pc" firstAttribute="top" secondItem="juU-Jj-VOG" secondAttribute="top" id="Wif-0J-iqr"/>
+                                            <constraint firstAttribute="bottom" secondItem="ech-nP-ZW0" secondAttribute="bottom" id="Wnz-6n-U1N"/>
                                             <constraint firstItem="fh1-gh-0pc" firstAttribute="leading" secondItem="juU-Jj-VOG" secondAttribute="leading" id="Yz2-ni-IAm"/>
                                             <constraint firstAttribute="trailing" secondItem="fh1-gh-0pc" secondAttribute="trailing" id="bSc-EO-9fU"/>
+                                            <constraint firstItem="ech-nP-ZW0" firstAttribute="top" secondItem="juU-Jj-VOG" secondAttribute="top" id="cbm-nf-XQN"/>
                                             <constraint firstAttribute="centerY" secondItem="9NZ-GQ-10D" secondAttribute="centerY" id="okS-DY-Y2Y"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="activityIndicator" destination="9NZ-GQ-10D" id="Qgz-rf-0ae"/>
+                                            <outlet property="detailView" destination="ech-nP-ZW0" id="4Iy-z4-AIL"/>
                                             <outlet property="imageView" destination="fh1-gh-0pc" id="M9y-re-gtu"/>
-                                            <segue destination="sqa-oX-g4c" kind="push" identifier="showLocationInMapSegue" id="gp1-84-JXl"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -117,6 +156,7 @@
                     <navigationItem key="navigationItem" id="05L-qW-BqL"/>
                     <connections>
                         <outlet property="collectionView" destination="1eX-zC-d4P" id="fRd-Sw-Upj"/>
+                        <segue destination="sqa-oX-g4c" kind="push" identifier="showLocationInMapSegue" id="Vpy-4i-F8w"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -163,6 +203,7 @@
     </scenes>
     <resources>
         <image name="lion" width="25" height="25"/>
+        <image name="location" width="32" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

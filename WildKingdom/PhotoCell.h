@@ -8,11 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+@class PhotoCell;
+@protocol PhotoCellDelegate
+
+- (void)didTapLocationButtonOnCell:(PhotoCell *)cell;
+
+@end
+
 @interface PhotoCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property id<PhotoCellDelegate> delegate;
+@property BOOL isFlipped;
 
 - (void)showActivityIndicator;
 - (void)hideActivityIndicator;
+- (void)showDetailView;
+- (void)hideDetailView;
+
+- (void)setCountry:(NSString *)country region:(NSString *)region;
 
 @end

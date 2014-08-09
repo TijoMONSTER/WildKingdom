@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
+@class Photo;
+@protocol PhotoDelegate
+
+- (void)locationWasSetForPhoto:(Photo *)photo;
+- (void)locationWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
+
+@end
+
 @interface Photo : NSObject
 
 @property NSString *photoId;
@@ -18,7 +26,13 @@
 @property int farm;
 @property UIImage *image;
 @property CLLocation *location;
+@property NSString *title;
+@property NSString *country;
+@property NSString *region;
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
+@property (weak) id<PhotoDelegate> delegate;
+
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary delegate:(id<PhotoDelegate>)delegate;
+- (void)loadLocation;
 @end

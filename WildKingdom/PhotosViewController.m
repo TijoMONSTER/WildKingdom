@@ -17,7 +17,7 @@
 #define flowLayoutItemSizeLandscape CGSizeMake(190, 190)
 
 
-@interface PhotosViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface PhotosViewController () <UICollectionViewDataSource, UICollectionViewDelegate, PhotoDelegate, PhotoCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -101,7 +101,7 @@
 								   
 								   NSArray *photosJSON = decodedJSON[@"photos"][@"photo"];
 								   for (NSDictionary *photoJSON in photosJSON) {
-									   Photo *photo = [[Photo alloc] initWithDictionary:photoJSON];
+									   Photo *photo = [[Photo alloc] initWithDictionary:photoJSON delegate:self];
 									   [self.photos addObject:photo];
 								   }
 								   [self.collectionView reloadData];
@@ -124,9 +124,14 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	PhotoCell *cell = (PhotoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
+	cell.delegate = self;
+
 
 	cell.imageView.image = nil;
 	[cell showActivityIndicator];
+
+	[cell hideDetailView];
+	cell.isFlipped = NO;
 
 	Photo *photo = self.photos[indexPath.row];
 
@@ -159,10 +164,76 @@
 
 #pragma mark - UICollectionViewDelegate
 
-//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//	NSLog(@"tapped cell index %d", indexPath.row);
-//}
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+//	NSLog(@"did select");
+	Photo *photo = (Photo *)self.photos[indexPath.row];
+	PhotoCell *cell = (PhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
+
+	[UIView transitionWithView:cell.imageView duration:0.5 options:UIViewAnimationOptionTransitionFlipFromRight animations:^{
+
+		// select cell
+		if (!cell.isFlipped) {
+			[cell showActivityIndicator];
+			[photo loadLocation];
+//			cell.isFlipped = YES;
+		}
+		// deselect cell by tapping on it
+		else {
+			[cell hideActivityIndicator];
+			[cell  hideDetailView];
+		}
+		cell.isFlipped = !cell.isFlipped;
+	} completion:nil];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	// deselect cell by tapping on another cell
+	PhotoCell *cell = (PhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
+	[cell hideActivityIndicator];
+	[cell hideDetailView];
+	cell.isFlipped = NO;
+}
+
+//- collectionview
+
+#pragma mark - PhotoDelegate
+
+- (void)locationWasSetForPhoto:(Photo *)photo
+{
+//	NSLog(@"loaded location");
+
+	NSArray *selectedCellsIndexPaths = self.collectionView.indexPathsForSelectedItems;
+	for (NSIndexPath *indexPath in selectedCellsIndexPaths) {
+		if ([self.photos[indexPath.row] isEqual:photo]) {
+			PhotoCell *cell = (PhotoCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+			[cell hideActivityIndicator];
+			[cell showDetailView];
+			[cell setCountry:photo.country region:photo.region];
+//			NSLog(@"%@", photo.location);
+			return;
+		}
+	}
+}
+
+- (void)locationWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage
+{
+	UIAlertView *alertView = [UIAlertView new];
+	alertView.message = errorMessage;
+	[alertView addButtonWithTitle:@"OK"];
+	[alertView show];
+	NSLog(@"%@", errorMessage);
+}
+
+#pragma mark - PhotoCellDelegate
+
+- (void)didTapLocationButtonOnCell:(PhotoCell *)cell
+{
+	NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+	Photo *photo = (Photo *)self.photos[indexPath.row];
+	[self performSegueWithIdentifier:@"showLocationInMapSegue" sender:photo];
+}
 
 #pragma mark - Segues
 
@@ -170,8 +241,7 @@
 {
 	if ([segue.identifier isEqualToString:@"showLocationInMapSegue"]) {
 		MapViewController *mapVC = (MapViewController *)segue.destinationViewController;
-		NSIndexPath *selectedCellIndexPath = self.collectionView.indexPathsForSelectedItems[0];
-		mapVC.photo = self.photos[selectedCellIndexPath.row];
+		mapVC.photo = sender;
 	}
 }
 
