@@ -30,6 +30,7 @@
 	self.farm = [dictionary[@"farm"] intValue];
 	self.title = dictionary[@"title"];
 	self.imageURLString = dictionary[@"url_z"];
+	self.ownerName = dictionary[@"ownername"];
 
 	double latitude = [dictionary[@"latitude"] doubleValue];
 	double longitude = [dictionary[@"longitude"] doubleValue];

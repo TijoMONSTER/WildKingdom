@@ -10,7 +10,7 @@
 
 @interface PhotoCellDetailView ()
 
-@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *ownerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *userPhotosButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
@@ -18,16 +18,9 @@
 
 @implementation PhotoCellDetailView
 
-- (void)setCountry:(NSString *)country region:(NSString *)region
+- (void)setOwnerName:(NSString *)owner
 {
-	if (!country) {
-		country = @"Unknown country";
-	}
-	if (!region) {
-		region = @"Unknown region";
-	}
-
-	self.locationLabel.text = [NSString stringWithFormat:@"%@, %@", country, region];
+	self.ownerLabel.text = owner;
 }
 
 - (void)setPhotoTitle:(NSString *)title

@@ -19,7 +19,7 @@
 @interface PhotoCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property id<PhotoCellDelegate> delegate;
+@property (weak, nonatomic) IBOutlet id<PhotoCellDelegate> delegate;
 @property BOOL isFlipped;
 
 - (void)showActivityIndicator;
@@ -27,8 +27,8 @@
 - (void)showDetailView;
 - (void)hideDetailView;
 
-- (void)setCountry:(NSString *)country region:(NSString *)region;
 - (void)enableUserPhotosButton;
 - (void)setPhotoTitle:(NSString *)title;
+- (void)setOwnerName:(NSString *)owner;
 
 @end

@@ -64,9 +64,9 @@
 	}];
 }
 
-- (void)setCountry:(NSString *)country region:(NSString *)region
+- (void)setOwnerName:(NSString *)owner
 {
-	[self.detailView setCountry:country region:region];
+	[self.detailView setOwnerName:owner];
 }
 
 - (void)enableUserPhotosButton

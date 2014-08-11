@@ -11,7 +11,6 @@
 @interface PhotosViewController : UIViewController
 
 - (void)loadFlickrPhotosWithKeyword:(NSString *)keyword;
-
 - (void)adjustFlowLayout;
 
 @end

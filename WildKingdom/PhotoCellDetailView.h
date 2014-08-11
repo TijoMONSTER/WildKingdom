@@ -10,7 +10,8 @@
 
 @interface PhotoCellDetailView : UIView
 
-- (void)setCountry:(NSString *)country region:(NSString *)region;
 - (void)enableUserPhotosButton;
 - (void)setPhotoTitle:(NSString *)title;
+- (void)setOwnerName:(NSString *)owner;
+
 @end

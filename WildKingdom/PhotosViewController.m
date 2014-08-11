@@ -12,7 +12,7 @@
 #import "Photo.h"
 #import "UserPhotosViewController.h"
 
-#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&has_geo=1&extras=url_z,geo&tag_mode=all&tags="
+#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&has_geo=1&extras=url_z,geo,owner_name&tag_mode=all&tags="
 
 #define flowLayoutItemSizePortrait CGSizeMake(155, 155)
 #define flowLayoutItemSizeLandscape CGSizeMake(190, 190)
@@ -79,10 +79,7 @@
 		self.collectionView.showsVerticalScrollIndicator = YES;
 		self.collectionView.showsHorizontalScrollIndicator = NO;
 		flowLayout.itemSize = flowLayoutItemSizePortrait;
-
 	}
-
-
 }
 
 - (void)loadFlickrPhotosWithKeyword:(NSString *)keyword
@@ -126,17 +123,12 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	PhotoCell *cell = (PhotoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
-	cell.delegate = self;
-
-	// reset last cell values
-	cell.imageView.image = nil;
-	[cell hideDetailView];
-	cell.isFlipped = NO;
-
 	Photo *photo = self.photos[indexPath.row];
+
 	// set the indexPath for the photo to know when it's finished downloading, which cell to update
 	photo.indexPath = indexPath;
 
+	// no image, show the loader and start downloading image
 	if (!photo.image) {
 		[cell showActivityIndicator];
 		[photo downloadImage];
@@ -146,44 +138,49 @@
 		[cell hideActivityIndicator];
 	}
 
+	// set title on detail view
 	[cell setPhotoTitle:photo.title];
+	// set owner name on detail view
+	[cell setOwnerName:photo.ownerName];
 
 	return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	PhotoCell *photoCell = (PhotoCell *)cell;
+	// reset last cell values (deselect it)
+	photoCell.imageView.image = nil;
+	[self deselectCell:photoCell];
 }
 
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	//	NSLog(@"did select");
 	Photo *photo = (Photo *)self.photos[indexPath.row];
 	PhotoCell *cell = (PhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
 
-	[UIView transitionWithView:cell.imageView duration:0.5 options:UIViewAnimationOptionTransitionFlipFromRight animations:^{
-
-		// select cell
-		if (!cell.isFlipped) {
-			[cell showDetailView];
-			[photo loadOtherPhotosFromUserURL];
-		}
-		// deselect cell by tapping on it
-		else {
-			[cell  hideDetailView];
-		}
-		cell.isFlipped = !cell.isFlipped;
-	} completion:nil];
+	if (!cell.isFlipped) {
+		[UIView transitionWithView:cell.imageView duration:0.5
+						   options:UIViewAnimationOptionTransitionFlipFromRight
+						animations:^{
+							// animate the detail view
+							[cell showDetailView];
+						}
+						completion:^(BOOL finished) {
+							// load the other user's photos
+							[photo loadOtherPhotosFromUserURL];
+							cell.isFlipped = YES;
+						}];
+	}
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	// deselect cell by tapping on another cell
 	PhotoCell *cell = (PhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
-	[cell hideActivityIndicator];
-	[cell hideDetailView];
-	cell.isFlipped = NO;
+	[self deselectCell:cell];
 }
-
-//- collectionview
 
 #pragma mark - PhotoDelegate
 
@@ -250,6 +247,13 @@
 	[alertView addButtonWithTitle:buttonText];
 	[alertView show];
 	NSLog(@"%@", message);
+}
+
+- (void)deselectCell:(PhotoCell *)cell
+{
+	[cell hideDetailView];
+	[cell hideActivityIndicator];
+	cell.isFlipped = NO;
 }
 
 @end
