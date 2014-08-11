@@ -12,6 +12,9 @@
 @class Photo;
 @protocol PhotoDelegate
 
+- (void)imageWasSetForPhoto:(Photo *)photo atIndexPath:(NSIndexPath *)indexPath;
+- (void)imageWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
+
 - (void)locationWasSetForPhoto:(Photo *)photo;
 - (void)locationWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
 
@@ -33,11 +36,12 @@
 @property NSString *country;
 @property NSString *region;
 @property NSString *userPhotosURL;
-
+@property NSIndexPath *indexPath;
 
 @property (weak) id<PhotoDelegate> delegate;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary delegate:(id<PhotoDelegate>)delegate;
+- (void)downloadImage;
 - (void)loadLocation;
 - (void)loadOtherPhotosFromUserURL;
 @end

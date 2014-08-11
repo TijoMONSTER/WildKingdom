@@ -15,6 +15,8 @@
 
 @interface Photo ()
 
+@property NSString *imageURLString;
+
 @end
 
 @implementation Photo
@@ -29,10 +31,33 @@
 	self.server = dictionary[@"server"];
 	self.farm = [dictionary[@"farm"] intValue];
 	self.title = dictionary[@"title"];
-
+	self.imageURLString = dictionary[@"url_z"];
 	self.delegate = delegate;
 
 	return self;
+}
+
+- (void)downloadImage
+{
+	if (self.image) {
+		[self.delegate imageWasSetForPhoto:self atIndexPath:self.indexPath];
+	}
+
+	NSURL *url = [NSURL URLWithString:self.imageURLString];
+	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+	[NSURLConnection sendAsynchronousRequest:urlRequest
+									   queue:[NSOperationQueue mainQueue]
+						   completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+
+							   if (!connectionError) {
+								   self.image = [UIImage imageWithData:data];
+								   [self.delegate imageWasSetForPhoto:self atIndexPath:self.indexPath];
+							   }
+							   // connection error
+							   else {
+								   [self.delegate imageWasNotSetForPhoto:self withErrorMessage:connectionError.localizedDescription];
+							   }
+						   }];
 }
 
 - (void)loadLocation

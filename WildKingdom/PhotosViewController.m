@@ -12,7 +12,7 @@
 #import "Photo.h"
 #import "UserPhotosViewController.h"
 
-#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&has_geo=1&tag_mode=all&tags="
+#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&has_geo=1&extras=url_z&tag_mode=all&tags="
 
 #define flowLayoutItemSizePortrait CGSizeMake(155, 155)
 #define flowLayoutItemSizeLandscape CGSizeMake(190, 190)
@@ -128,39 +128,24 @@
 	PhotoCell *cell = (PhotoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
 	cell.delegate = self;
 
-
+	// reset last cell values
 	cell.imageView.image = nil;
-	[cell showActivityIndicator];
-
 	[cell hideDetailView];
 	cell.isFlipped = NO;
 
 	Photo *photo = self.photos[indexPath.row];
+	// set the indexPath for the photo to know when it's finished downloading, which cell to update
+	photo.indexPath = indexPath;
 
-	// load image
 	if (!photo.image) {
-		NSString *imageURLString = [NSString stringWithFormat:@"https://farm%d.staticflickr.com/%@/%@_%@.jpg", photo.farm, photo.server, photo.photoId, photo.secret];
-
 		[cell showActivityIndicator];
-
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul), ^{
-
-			NSURL *imageURL = [NSURL URLWithString:imageURLString];
-			NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-			UIImage *image = [UIImage imageWithData:imageData];
-
-			dispatch_async(dispatch_get_main_queue(), ^{
-				photo.image = image;
-				cell.imageView.image = photo.image;
-
-				[cell hideActivityIndicator];
-			});
-		});
+		[photo downloadImage];
 	} else {
 		// show the cached image
 		cell.imageView.image = photo.image;
 		[cell hideActivityIndicator];
 	}
+
 	return cell;
 }
 
@@ -202,6 +187,18 @@
 //- collectionview
 
 #pragma mark - PhotoDelegate
+
+- (void)imageWasSetForPhoto:(Photo *)photo atIndexPath:(NSIndexPath *)indexPath
+{
+	PhotoCell *cell = (PhotoCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+	cell.imageView.image = photo.image;
+	[cell hideActivityIndicator];
+}
+
+- (void)imageWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage
+{
+	[self showAlertViewWithMessage:errorMessage buttonText:@"OK"];
+}
 
 - (void)locationWasSetForPhoto:(Photo *)photo
 {
