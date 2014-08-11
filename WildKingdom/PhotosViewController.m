@@ -12,7 +12,7 @@
 #import "Photo.h"
 #import "UserPhotosViewController.h"
 
-#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&has_geo=1&extras=url_z&tag_mode=all&tags="
+#define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&has_geo=1&extras=url_z,geo&tag_mode=all&tags="
 
 #define flowLayoutItemSizePortrait CGSizeMake(155, 155)
 #define flowLayoutItemSizeLandscape CGSizeMake(190, 190)
@@ -21,10 +21,8 @@
 @interface PhotosViewController () <UICollectionViewDataSource, UICollectionViewDelegate, PhotoDelegate, PhotoCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-
 @property NSMutableArray *photos;
 @property NSMutableDictionary *cachedPhotos;
-
 @property UICollectionViewFlowLayout *flowLayout;
 
 @end
@@ -83,6 +81,8 @@
 		flowLayout.itemSize = flowLayoutItemSizePortrait;
 
 	}
+
+
 }
 
 - (void)loadFlickrPhotosWithKeyword:(NSString *)keyword
@@ -100,7 +100,7 @@
 
 							   if (!connectionError) {
 								   NSDictionary *decodedJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-								   
+
 								   NSArray *photosJSON = decodedJSON[@"photos"][@"photo"];
 								   for (NSDictionary *photoJSON in photosJSON) {
 									   Photo *photo = [[Photo alloc] initWithDictionary:photoJSON delegate:self];
@@ -113,7 +113,7 @@
 								   [alertView addButtonWithTitle:@"OK"];
 								   [alertView show];
 							   }
-	}];
+						   }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -146,6 +146,8 @@
 		[cell hideActivityIndicator];
 	}
 
+	[cell setPhotoTitle:photo.title];
+
 	return cell;
 }
 
@@ -153,7 +155,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//	NSLog(@"did select");
+	//	NSLog(@"did select");
 	Photo *photo = (Photo *)self.photos[indexPath.row];
 	PhotoCell *cell = (PhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
 
@@ -161,14 +163,11 @@
 
 		// select cell
 		if (!cell.isFlipped) {
-			[cell showActivityIndicator];
-			[photo loadLocation];
+			[cell showDetailView];
 			[photo loadOtherPhotosFromUserURL];
-//			cell.isFlipped = YES;
 		}
 		// deselect cell by tapping on it
 		else {
-			[cell hideActivityIndicator];
 			[cell  hideDetailView];
 		}
 		cell.isFlipped = !cell.isFlipped;
@@ -200,29 +199,12 @@
 	[self showAlertViewWithMessage:errorMessage buttonText:@"OK"];
 }
 
-- (void)locationWasSetForPhoto:(Photo *)photo
-{
-	NSIndexPath *selectedCellIndexPath = self.collectionView.indexPathsForSelectedItems[0];
-	PhotoCell *cell = (PhotoCell *)[self.collectionView cellForItemAtIndexPath:selectedCellIndexPath];
-
-	[cell hideActivityIndicator];
-	[cell setPhotoTitle:photo.title];
-	[cell setCountry:photo.country region:photo.region];
-	[cell showDetailView];
-}
-
-- (void)locationWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage
-{
-	[self showAlertViewWithMessage:errorMessage buttonText:@"OK"];
-}
-
 - (void)userPhotosURLWasSetForPhoto:(Photo *)photo
 {
 	// enable user photos button
 	NSIndexPath *selectedCellIndexPath = self.collectionView.indexPathsForSelectedItems[0];
 	PhotoCell *cell = (PhotoCell *)[self.collectionView cellForItemAtIndexPath:selectedCellIndexPath];
 	[cell enableUserPhotosButton];
-
 }
 
 - (void)userPhotosURLWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage

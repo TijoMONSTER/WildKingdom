@@ -15,8 +15,8 @@
 - (void)imageWasSetForPhoto:(Photo *)photo atIndexPath:(NSIndexPath *)indexPath;
 - (void)imageWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
 
-- (void)locationWasSetForPhoto:(Photo *)photo;
-- (void)locationWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
+//- (void)locationWasSetForPhoto:(Photo *)photo;
+//- (void)locationWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
 
 - (void)userPhotosURLWasSetForPhoto:(Photo *)photo;
 - (void)userPhotosURLWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
@@ -33,8 +33,8 @@
 @property UIImage *image;
 @property CLLocation *location;
 @property NSString *title;
-@property NSString *country;
-@property NSString *region;
+//@property NSString *country;
+//@property NSString *region;
 @property NSString *userPhotosURL;
 @property NSIndexPath *indexPath;
 
@@ -42,6 +42,6 @@
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary delegate:(id<PhotoDelegate>)delegate;
 - (void)downloadImage;
-- (void)loadLocation;
+//- (void)loadLocation;
 - (void)loadOtherPhotosFromUserURL;
 @end
