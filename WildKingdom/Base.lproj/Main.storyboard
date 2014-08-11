@@ -85,19 +85,26 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="155" height="155"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Taken at:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5w5-s9-6SE">
+                                                            <rect key="frame" x="20" y="20" width="115" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LabelLabelLabelLabelLabel" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="115" translatesAutoresizingMaskIntoConstraints="NO" id="ILe-Rd-QEz">
-                                                            <rect key="frame" x="20" y="20" width="115" height="45"/>
+                                                            <rect key="frame" x="20" y="49" width="115" height="45"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="195-32-NOl">
-                                                            <rect key="frame" x="103" y="103" width="32" height="32"/>
+                                                            <rect key="frame" x="110" y="115" width="25" height="25"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="32" id="LVR-Il-dWF"/>
-                                                                <constraint firstAttribute="height" constant="32" id="ebj-Fk-qje"/>
+                                                                <constraint firstAttribute="width" constant="25" id="8GI-2N-zRo"/>
+                                                                <constraint firstAttribute="height" constant="25" id="ZFd-Ur-O4T"/>
                                                             </constraints>
                                                             <state key="normal" image="location">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -106,11 +113,27 @@
                                                                 <action selector="onLocationButtonPressed:" destination="juU-Jj-VOG" eventType="touchUpInside" id="QWU-XQ-xl6"/>
                                                             </connections>
                                                         </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Us-0l-p0D">
+                                                            <rect key="frame" x="77" y="115" width="25" height="25"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="25" id="HvL-NG-mpQ"/>
+                                                                <constraint firstAttribute="width" constant="25" id="j1l-tA-mG6"/>
+                                                            </constraints>
+                                                            <state key="normal" image="stack_of_photos">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="onShowMoreUserPhotosButtonPressed:" destination="juU-Jj-VOG" eventType="touchUpInside" id="wwX-8b-fzK"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="195-32-NOl" secondAttribute="bottom" constant="20" id="4gQ-4T-r7h"/>
-                                                        <constraint firstAttribute="trailing" secondItem="195-32-NOl" secondAttribute="trailing" constant="20" id="X2Z-gt-K5U"/>
+                                                        <constraint firstAttribute="bottom" secondItem="5Us-0l-p0D" secondAttribute="bottom" constant="15" id="FlM-Sh-r5X"/>
+                                                        <constraint firstAttribute="bottom" secondItem="195-32-NOl" secondAttribute="bottom" constant="15" id="ON7-m6-xam"/>
+                                                        <constraint firstItem="195-32-NOl" firstAttribute="leading" secondItem="5Us-0l-p0D" secondAttribute="trailing" constant="8" id="RiQ-rM-haa"/>
+                                                        <constraint firstAttribute="trailing" secondItem="195-32-NOl" secondAttribute="trailing" constant="20" id="gKc-QC-cI1"/>
                                                     </constraints>
                                                     <connections>
                                                         <outlet property="locationLabel" destination="ILe-Rd-QEz" id="Ozk-4P-WYn"/>
@@ -204,6 +227,7 @@
     <resources>
         <image name="lion" width="25" height="25"/>
         <image name="location" width="32" height="32"/>
+        <image name="stack_of_photos" width="32" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -12,6 +12,7 @@
 @protocol PhotoCellDelegate
 
 - (void)didTapLocationButtonOnCell:(PhotoCell *)cell;
+- (void)didTapShowMoreUserPhotosButtonOnCell:(PhotoCell *)cell;
 
 @end
 

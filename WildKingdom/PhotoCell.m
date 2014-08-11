@@ -76,4 +76,8 @@
 	[self.delegate didTapLocationButtonOnCell:self];
 }
 
+- (IBAction)onShowMoreUserPhotosButtonPressed:(UIButton *)sender
+{
+	[self.delegate didTapShowMoreUserPhotosButtonOnCell:self];
+}
 @end

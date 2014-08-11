@@ -235,6 +235,13 @@
 	[self performSegueWithIdentifier:@"showLocationInMapSegue" sender:photo];
 }
 
+- (void)didTapShowMoreUserPhotosButtonOnCell:(PhotoCell *)cell
+{
+	NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+	Photo *photo = (Photo *)self.photos[indexPath.row];
+	[self performSegueWithIdentifier:@"showLocationInMapSegue" sender:photo];
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
