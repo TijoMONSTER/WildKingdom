@@ -28,5 +28,7 @@
 - (void)hideDetailView;
 
 - (void)setCountry:(NSString *)country region:(NSString *)region;
+- (void)enableUserPhotosButton;
+- (void)setPhotoTitle:(NSString *)title;
 
 @end

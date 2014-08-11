@@ -69,6 +69,16 @@
 	[self.detailView setCountry:country region:region];
 }
 
+- (void)enableUserPhotosButton
+{
+	[self.detailView enableUserPhotosButton];
+}
+
+- (void)setPhotoTitle:(NSString *)title
+{
+	[self.detailView setPhotoTitle:title];
+}
+
 #pragma mark - IBActions
 
 - (IBAction)onLocationButtonPressed:(UIButton *)sender

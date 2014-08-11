@@ -11,6 +11,8 @@
 @interface PhotoCellDetailView ()
 
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UIButton *userPhotosButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
@@ -26,6 +28,19 @@
 	}
 
 	self.locationLabel.text = [NSString stringWithFormat:@"%@, %@", country, region];
+}
+
+- (void)setPhotoTitle:(NSString *)title
+{
+	if (!title) {
+		title = @"Untitled";
+	}
+	self.titleLabel.text = title;
+}
+
+- (void)enableUserPhotosButton
+{
+	self.userPhotosButton.enabled = YES;
 }
 
 @end

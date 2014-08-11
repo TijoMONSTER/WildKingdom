@@ -15,6 +15,9 @@
 - (void)locationWasSetForPhoto:(Photo *)photo;
 - (void)locationWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
 
+- (void)userPhotosURLWasSetForPhoto:(Photo *)photo;
+- (void)userPhotosURLWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage;
+
 @end
 
 @interface Photo : NSObject
@@ -29,10 +32,12 @@
 @property NSString *title;
 @property NSString *country;
 @property NSString *region;
+@property NSString *userPhotosURL;
 
 
 @property (weak) id<PhotoDelegate> delegate;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary delegate:(id<PhotoDelegate>)delegate;
 - (void)loadLocation;
+- (void)loadOtherPhotosFromUserURL;
 @end

@@ -10,6 +10,7 @@
 #import "PhotoCell.h"
 #import "MapViewController.h"
 #import "Photo.h"
+#import "UserPhotosViewController.h"
 
 #define urlToRetrieveFlickrPhotos @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4d0b397e77019c74a5d42d08253e500a&format=json&nojsoncallback=1&license=1,2,3&per_page=10&has_geo=1&tag_mode=all&tags="
 
@@ -44,6 +45,7 @@
 {
 	[super viewWillAppear:animated];
 	self.tabBarController.tabBar.hidden = NO;
+	self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -176,6 +178,7 @@
 		if (!cell.isFlipped) {
 			[cell showActivityIndicator];
 			[photo loadLocation];
+			[photo loadOtherPhotosFromUserURL];
 //			cell.isFlipped = YES;
 		}
 		// deselect cell by tapping on it
@@ -202,28 +205,32 @@
 
 - (void)locationWasSetForPhoto:(Photo *)photo
 {
-//	NSLog(@"loaded location");
+	NSIndexPath *selectedCellIndexPath = self.collectionView.indexPathsForSelectedItems[0];
+	PhotoCell *cell = (PhotoCell *)[self.collectionView cellForItemAtIndexPath:selectedCellIndexPath];
 
-	NSArray *selectedCellsIndexPaths = self.collectionView.indexPathsForSelectedItems;
-	for (NSIndexPath *indexPath in selectedCellsIndexPaths) {
-		if ([self.photos[indexPath.row] isEqual:photo]) {
-			PhotoCell *cell = (PhotoCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-			[cell hideActivityIndicator];
-			[cell showDetailView];
-			[cell setCountry:photo.country region:photo.region];
-//			NSLog(@"%@", photo.location);
-			return;
-		}
-	}
+	[cell hideActivityIndicator];
+	[cell setPhotoTitle:photo.title];
+	[cell setCountry:photo.country region:photo.region];
+	[cell showDetailView];
 }
 
 - (void)locationWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage
 {
-	UIAlertView *alertView = [UIAlertView new];
-	alertView.message = errorMessage;
-	[alertView addButtonWithTitle:@"OK"];
-	[alertView show];
-	NSLog(@"%@", errorMessage);
+	[self showAlertViewWithMessage:errorMessage buttonText:@"OK"];
+}
+
+- (void)userPhotosURLWasSetForPhoto:(Photo *)photo
+{
+	// enable user photos button
+	NSIndexPath *selectedCellIndexPath = self.collectionView.indexPathsForSelectedItems[0];
+	PhotoCell *cell = (PhotoCell *)[self.collectionView cellForItemAtIndexPath:selectedCellIndexPath];
+	[cell enableUserPhotosButton];
+
+}
+
+- (void)userPhotosURLWasNotSetForPhoto:(Photo *)photo withErrorMessage:(NSString *)errorMessage
+{
+	[self showAlertViewWithMessage:errorMessage buttonText:@"OK"];
 }
 
 #pragma mark - PhotoCellDelegate
@@ -239,7 +246,7 @@
 {
 	NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
 	Photo *photo = (Photo *)self.photos[indexPath.row];
-	[self performSegueWithIdentifier:@"showLocationInMapSegue" sender:photo];
+	[self performSegueWithIdentifier:@"showOtherPhotosForUserSegue" sender:photo];
 }
 
 #pragma mark - Segues
@@ -249,7 +256,21 @@
 	if ([segue.identifier isEqualToString:@"showLocationInMapSegue"]) {
 		MapViewController *mapVC = (MapViewController *)segue.destinationViewController;
 		mapVC.photo = sender;
+	} else if ([segue.identifier isEqualToString:@"showOtherPhotosForUserSegue"]) {
+		UserPhotosViewController *userPhotosVC = (UserPhotosViewController *)segue.destinationViewController;
+		userPhotosVC.photo = sender;
 	}
+}
+
+#pragma mark - Helper methods
+
+- (void)showAlertViewWithMessage:(NSString *)message buttonText:(NSString *)buttonText
+{
+	UIAlertView *alertView = [UIAlertView new];
+	alertView.message = message;
+	[alertView addButtonWithTitle:buttonText];
+	[alertView show];
+	NSLog(@"%@", message);
 }
 
 @end

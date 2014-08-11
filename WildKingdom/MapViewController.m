@@ -29,10 +29,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	self.tabBarController.tabBar.hidden = YES;
+	self.navigationController.navigationBarHidden = NO;
 
 	if (self.photo.location) {
 		[self setAnnotation];
 		[self zoomToAnnotation];
+	} else {
+		UIAlertView *alertView = [UIAlertView new];
+		alertView.message = @"Can't show photo location.";
+		[alertView addButtonWithTitle:@"OK"];
+		[alertView show];
 	}
 
 	// load the location just once
